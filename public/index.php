@@ -10,7 +10,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 
 require '../vendor/autoload.php';
-require_once '../src/classes/autoload.php';
+
+require_once './../src/classes/autoload_classes.php';
 
 // Cambiar en prod
 $config['displayErrorDetails'] = true;
@@ -39,21 +40,13 @@ $container['logger'] = function ($c) {
  */
 
 $app->get('/', function (Request $request, Response $response, array $args) {
-    if ($request->getAttribute('isLoggedIn') === 'true') {
-        $rp['token'] = $request->getAttribute('newToken');
 
-        $rp['data'] = 'soy un dato de ejemplo, no esperes mucho de mi. Estoy reemplazando una conexion a un SQL server que no anda';
+    $rp['data'] = 'soy un dato de ejemplo, no esperes mucho de mi.';
 
-        return $response->withHeader('Content-type', 'application/json')
-            ->withStatus(200)
-            ->withJson($rp);
-    } else {
-        return $response->withHeader('Content-type', 'application/json')
-            ->withStatus(401)
-            ->withJson(null);
-    }
+    return $response->withHeader('Content-type', 'application/json')
+        ->withStatus(200)
+        ->withJson($rp);
 
-})->add($guardMiddleware);
-
+});
 
 $app->run();
