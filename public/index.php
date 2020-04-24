@@ -10,7 +10,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 
 require '../vendor/autoload.php';
-require_once '../src/config/autoload_config.php';
+require_once '../src/classes/autoload.php';
 
 // Cambiar en prod
 $config['displayErrorDetails'] = true;
