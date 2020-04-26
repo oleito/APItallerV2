@@ -43,6 +43,8 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 
     $rp['data'] = 'soy un dato de ejemplo, no esperes mucho de mi.';
 
+    $this->logger->warning('Soy un warning - ', []);
+
     return $response->withHeader('Content-type', 'application/json')
         ->withStatus(200)
         ->withJson($rp);
