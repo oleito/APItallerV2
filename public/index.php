@@ -43,7 +43,10 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 
     $rp['data'] = 'soy un dato de ejemplo, no esperes mucho de mi.';
 
-    $this->logger->warning('Soy un warning - ', []);
+    // $this->logger->warning('Soy un warning - ', []);
+    $pdo = new pdoMysql($this->logger);
+
+    $pdo->conectar();
 
     return $response->withHeader('Content-type', 'application/json')
         ->withStatus(200)
