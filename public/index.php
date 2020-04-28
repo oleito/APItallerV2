@@ -2,9 +2,10 @@
 // Permite la conexion desde cualquier origen
 header("Access-Control-Allow-Origin: *");
 // Permite la ejecucion de los metodos
-header("Access-Control-Allow-Methods: *");
-header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization, Token");
 header("Content-Type: application/json");
+
 
 use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
@@ -53,5 +54,7 @@ $app->get('/', function (Request $request, Response $response, array $args) {
         ->withJson($rp);
 
 });
+
+require_once './../src/rutas/autoload_rutas.php';
 
 $app->run();
