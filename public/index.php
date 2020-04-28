@@ -54,4 +54,6 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 
 });
 
+require_once './../src/rutas/autoload_rutas.php';
+
 $app->run();
