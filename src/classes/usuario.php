@@ -28,22 +28,24 @@ class usuario
         $sql = 'SELECT
                 idusuario AS id,
                 usuario_nombre AS nombre,
-                usuario_apellido AS apellido
+                usuario_apellido AS apellido,
+                usuario_password AS clave
                 FROM usuario
                 WHERE usuario_username = :usuario
-                AND usuario_password =  :clave
                 LIMIT 1;';
 
-        $data = array(':usuario' => $username, ':clave' => $password);
+        $data = array(':usuario' => $username,);
         $res = $database->querySQL($sql, $data);
 
-        if (count($res) === 0) {
-            return false;
+        if (count($res) > 0) {
+            if (password_verify($password, $res[0]['clave'])) {
+                $this->usr_id = $res[0]['id'];
+                $this->usr_nombre = $res[0]['nombre'];
+                $this->usr_apellido = $res[0]['apellido'];
+                return true;
+            }
         }
-        $this->usr_id = $res[0]['id'];
-        $this->usr_nombre = $res[0]['nombre'];
-        $this->usr_apellido = $res[0]['apellido'];
-        return true;
+        return false;
     }
 
     public function getUsuario()

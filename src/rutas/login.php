@@ -22,15 +22,17 @@ $app->post('/login', function (Request $request, Response $response, array $args
         $usuario = $usuario->getUsuario();
 
         $token = new token;
-        $rp['token'] = $token->setToken($usuario);
+        $respuesta['token'] = $token->setToken($usuario);
 
-        $rp['data'] = '';
+        $respuesta['data'] = '';
 
-        return $response->withHeader('Content-type', 'application/json')
+        return $response
+            ->withHeader('Content-type', 'application/json')
             ->withStatus(200)
-            ->withJson($rp);
+            ->withJson($respuesta);
     } else {
-        return $response->withHeader('Content-type', 'application/json')
+        return $response
+            ->withHeader('Content-type', 'application/json')
             ->withStatus(401)
             ->withJson(null);
     }

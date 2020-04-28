@@ -1,1 +1,0 @@
-[2020-04-28T01:06:23.109335-03:00] REPORTES.WARNING: PDO - MySQL->querySQL() -  ["SQLSTATE[42000]: Syntax error or access violation: 1142 SELECT command denied to user 'cdgwebco_api_tallerv2'@'190-0-97-61.sanluisctv.com.ar' for table 'usuarios'"] []

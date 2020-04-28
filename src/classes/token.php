@@ -11,7 +11,7 @@ class token
      *
      * @var string
      */
-    private $secret = '@9KRXT#CHEx;8<mH~H_w';
+    private $secret = 'rCaDNN0VxJ0MLMYxA0BmGeBBlkPXneyN';
     private $timeOut = 1000; // Minutos de vida del token
     private $expire = null;
     /**
