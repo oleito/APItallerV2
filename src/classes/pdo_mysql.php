@@ -40,37 +40,18 @@ class pdoMysql
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (Exception $e) {
             $this->logger->warning('PDO - mysql->conectar() - ', [$e->getMessage()]);
+            return null;
         }
-        return $this;
-    }
-
-
-    /**  **/
-    public function querySQL($sql, $data)
-    {
-        $this->conectar();
-        try {
-            $sth = $this->conn->prepare($sql);
-            $sth->execute($data);
-            
-            return $sth->fetchAll();
-
-        } catch (Exception $e) {
-            $this->logger->warning('PDO - MySQL->querySQL() - ', [$e->getMessage()]);
-            return [''];
-        } finally {
-            $this->desconectar();
-        }
-    }
-
-    public function logIn()
-    {
-
+        return $this->conn;
     }
 
     public function desconectar()
     {
-        $this->conn = null;
+        unset($this->conn);
+    }
+    public function __destruct()
+    {
+        $this->desconectar();
     }
 
 }
