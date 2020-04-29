@@ -45,6 +45,23 @@ class pdoMysql
         return $this->conn;
     }
 
+    public function querySQL($sql, $data)
+    {
+        $this->conectar();
+        try {
+            $sth = $this->conn->prepare($sql);
+            $sth->execute($data);
+            
+            return $sth->fetchAll();
+
+        } catch (Exception $e) {
+            $this->logger->warning('PDO - MySQL->querySQL() - ', [$e->getMessage()]);
+            return [''];
+        } finally {
+            $this->desconectar();
+        }
+    }
+
     public function desconectar()
     {
         unset($this->conn);
