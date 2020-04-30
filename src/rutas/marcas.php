@@ -13,26 +13,18 @@ $app->group('/marcas', function () use ($app) {
             $marca = new Marca($this->logger);
 
             $res = $marca->listarMarcas();
-    
 
-            if ($res === 400) {
+            if (is_numeric($res)) {
                 return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus(400)
+                    ->withStatus($res)
                     ->withJson(null);
-            } else if ($res === 404) {
+            } else {
+                $rp['data'] = $res;
                 return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus(404)
-                    ->withJson(null);
-            } else if ($res === 500) {
-                return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus(500)
-                    ->withJson(null);
+                    ->withStatus(200)
+                    ->withJson($rp);
             }
 
-            $rp['data'] = $res;
-            return $response->withHeader('Content-type', 'application/json')
-                ->withStatus(200)
-                ->withJson($rp);
         }
         return $response->withHeader('Content-type', 'application/json')
             ->withStatus(401)
