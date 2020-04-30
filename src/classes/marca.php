@@ -45,4 +45,22 @@ class Marca
         }
     }
 
+
+
+    public function eliminarMarca($marca)
+    {
+        $sql = "DELETE FROM vhMarca WHERE vhMarca.idvhMarca = 6;";
+        try {
+            $sth = $this->conn->prepare($sql);
+            $sth->execute(array(
+                ':marca' => $marca,
+                ':iniciales' => $iniciales,
+            ));
+            return $this->listarMarcas();
+        } catch (Exception $e) {
+            $this->logger->warning('insertarMarca() - ', [$e->getMessage()]);
+            return 500;
+        }
+    }
+
 }
