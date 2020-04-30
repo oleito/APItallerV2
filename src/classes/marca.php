@@ -14,22 +14,20 @@ class Marca
 
     public function listarMarcas()
     {
+        /**HAY QUE MEJORAR ESTA RESPUESTA */
         $sql = "SELECT * FROM vhMarca";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute();
             return $sth->fetchAll();
         } catch (Exception $e) {
-            $this->logger->warning('vigil-diaria() - ', [$e->getMessage()]);
+            $this->logger->warning('listarMarcas() - ', [$e->getMessage()]);
             return 500;
         }
     }
 
     public function insertarMarca($marca, $iniciales)
     {
-
-        // $marca->insertarMarca('Citroën','Ci');
-
         $sql = "INSERT INTO vhMarca
                 (idvhMarca, vhMarca, vhIniciales)
                 VALUES
@@ -40,9 +38,9 @@ class Marca
                 ':marca' => $marca,
                 ':iniciales' => $iniciales,
             ));
-            return $sth->fetchAll();
+            return $this->listarMarcas();
         } catch (Exception $e) {
-            $this->logger->warning('vigil-diaria() - ', [$e->getMessage()]);
+            $this->logger->warning('insertarMarca() - ', [$e->getMessage()]);
             return 500;
         }
     }
