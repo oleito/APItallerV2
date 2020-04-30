@@ -45,16 +45,13 @@ class Marca
         }
     }
 
-
-
-    public function eliminarMarca($marca)
+    public function eliminarMarca($idMarca)
     {
-        $sql = "DELETE FROM vhMarca WHERE vhMarca.idvhMarca = 6;";
+        $sql = "DELETE FROM vhMarca WHERE vhMarca.idvhMarca = :idMarca ;";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute(array(
-                ':marca' => $marca,
-                ':iniciales' => $iniciales,
+                ':idMarca' => $idMarca,
             ));
             return $this->listarMarcas();
         } catch (Exception $e) {

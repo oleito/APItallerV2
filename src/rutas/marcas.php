@@ -65,20 +65,14 @@ $app->group('/marcas', function () use ($app) {
             ->withJson(null);
     });
 
-    /** POST */
+    /** DELETE */
     $app->delete('', function ($request, $response) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
-            $bodyIn = [];
-
-            $bodyIn = $request->getParsedBody();
-            @$nuevaMarca = $bodyIn['data']['marca'];
-            @$iniciales = $bodyIn['data']['iniciales'];
-
             $marca = new Marca($this->logger);
 
-            $res = $marca->insertarMarca($nuevaMarca, $iniciales);
+            $res = $marca->eliminarMarca(7);
 
             if (is_numeric($res)) {
                 return $response->withHeader('Content-type', 'application/json')
