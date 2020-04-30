@@ -55,7 +55,7 @@ class Marca
             ));
             return $this->listarMarcas();
         } catch (Exception $e) {
-            $this->logger->warning('insertarMarca() - ', [$e->getMessage()]);
+            $this->logger->warning('eliminar marca() - ', [$e->getMessage()]);
             return 500;
         }
     }

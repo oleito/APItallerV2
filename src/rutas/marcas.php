@@ -1,4 +1,6 @@
 <?php
+use \Psr\Http\Message\ResponseInterface as Response;
+use \Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * RUTA
@@ -8,7 +10,7 @@
 $app->group('/marcas', function () use ($app) {
 
     /** GET */
-    $app->get('', function ($request, $response) {
+    $app->get('', function (Request $request, Response $response) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
@@ -34,7 +36,7 @@ $app->group('/marcas', function () use ($app) {
     });
 
     /** POST */
-    $app->post('', function ($request, $response) {
+    $app->post('', function (Request $request, Response $response) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
@@ -66,13 +68,16 @@ $app->group('/marcas', function () use ($app) {
     });
 
     /** DELETE */
-    $app->delete('', function ($request, $response) {
+    $app->delete('/{idMarca}', function (Request $request, Response $response, array $args) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
-            $marca = new Marca($this->logger);
+            $res = 400;
+            if (is_numeric($args['idMarca'])) {
+                $marca = new Marca($this->logger);
 
-            $res = $marca->eliminarMarca(7);
+                $res = $marca->eliminarMarca($args['idMarca']);
+            }
 
             if (is_numeric($res)) {
                 return $response->withHeader('Content-type', 'application/json')
