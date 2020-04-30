@@ -14,55 +14,60 @@ class Tipo
 
     public function listarTipos()
     {
-        $sql = "SELECT 
-                idvhTipo AS Id, 
-                vhTipo AS Tipo, 
-                vhTipo_img AS Img, 
-                vhTipo_img_all AS Img_all 
+        $sql = "SELECT
+                idvhTipo AS Id,
+                vhTipo AS Tipo,
+                vhTipo_img AS Img,
+                vhTipo_img_all AS Img_all
                 FROM vhTipo;";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute();
             return $sth->fetchAll();
         } catch (Exception $e) {
-            $this->logger->warning('listarMarcas() - ', [$e->getMessage()]);
+            $this->logger->warning('listarTipos() - ', [$e->getMessage()]);
             return 500;
         }
     }
 
-    public function insertarTipo($marca, $iniciales)
+    public function insertarTipo($tipo, $img, $imgAll)
     {
-        $sql = "INSERT INTO vhMarca
-                (idvhMarca, vhMarca, vhIniciales)
-                VALUES
-                (NULL, :marca, :iniciales);";
+        $sql = "INSERT
+                INTO vhTipo
+                (idvhTipo, vhTipo, vhTipo_img, vhTipo_img_all)
+                VALUES (
+                    NULL,
+                    :tipo,
+                    :img,
+                    :imgAll
+                );";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute(array(
-                ':marca' => $marca,
-                ':iniciales' => $iniciales,
+                ':tipo' => $tipo,
+                ':img' => $img,
+                ':imgAll' => $imgAll,
             ));
-            return $this->listarMarcas();
+            return $this->listarTipos();
         } catch (Exception $e) {
-            $this->logger->warning('insertarMarca() - ', [$e->getMessage()]);
+            $this->logger->warning('insertarTipo() - ', [$e->getMessage()]);
             return 500;
         }
     }
 
     public function eliminarTipo($idTipo)
     {
-        $sql = "DELETE FROM vhMarca WHERE vhMarca.idvhMarca = :idTipo ;";
+        $sql = "DELETE FROM vhTipo WHERE vhTipo.idvhTipo = :idTipo;";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute(array(
                 ':idTipo' => $idTipo,
             ));
-            return $this->listarMarcas();
+            return $this->listarTipos();
         } catch (Exception $e) {
-            $this->logger->warning('eliminar marca() - ', [$e->getMessage()]);
+            $this->logger->warning('eliminar tipo() - ', [$e->getMessage()]);
             return 500;
         }
     }
 
 }
-

@@ -22,12 +22,13 @@ $app->group('/tipos', function () use ($app) {
                 $bodyIn = [];
 
                 $bodyIn = $request->getParsedBody();
-                @$nuevaMarca = $bodyIn['data']['marca'];
-                @$iniciales = $bodyIn['data']['iniciales'];
+                @$nuevoTipo = $bodyIn['data']['tipo'];
+                @$img = $bodyIn['data']['img'];
+                @$imgLarge = $bodyIn['data']['imgLarge'];
 
                 $tipo = new Tipo($this->logger);
 
-                $res = $tipo->insertarTipo($nuevaMarca, $iniciales);
+                $res = $tipo->insertarTipo($nuevoTipo, $img, $imgLarge);
             } else {
                 $res = 405;
             }
