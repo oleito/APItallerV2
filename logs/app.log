@@ -1,0 +1,3 @@
+[2020-04-30T01:09:06.043429-03:00] REPORTES.WARNING: insertarTipo() -  ["SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'vhTipo' cannot be null"] []
+[2020-04-30T01:09:40.950977-03:00] REPORTES.WARNING: insertarTipo() -  ["SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'vhTipo' cannot be null"] []
+[2020-04-30T01:16:36.224567-03:00] REPORTES.WARNING: insertarMarca() -  ["SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'vhMarca' cannot be null"] []
