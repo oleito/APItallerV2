@@ -4,7 +4,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * RUTA
- * LOGIN
+ * MARCAS
  */
 
 $app->group('/marcas', function () use ($app) {
@@ -52,9 +52,9 @@ $app->group('/marcas', function () use ($app) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
-            if ($request->$request->isDelete()) {
+            if ($request->isDelete()) {
                 if (is_numeric($args['idMarca'])) {
-                    
+
                     $marca = new Marca($this->logger);
 
                     $res = $marca->eliminarMarca($args['idMarca']);
