@@ -8,75 +8,28 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
  */
 
 $app->group('/marcas', function () use ($app) {
-
-    /** GET */
-    $app->get('', function (Request $request, Response $response) {
+    $app->map(['GET', 'POST'], '', function (Request $request, Response $response, array $args) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
-            $marca = new Marca($this->logger);
+            if ($request->isGet()) {
 
-            $res = $marca->listarMarcas();
-
-            if (is_numeric($res)) {
-                return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus($res)
-                    ->withJson(null);
-            } else {
-                $rp['data'] = $res;
-                return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus(200)
-                    ->withJson($rp);
-            }
-
-        }
-        return $response->withHeader('Content-type', 'application/json')
-            ->withStatus(401)
-            ->withJson(null);
-    });
-
-    /** POST */
-    $app->post('', function (Request $request, Response $response) {
-        if ($request->getAttribute('isLoggedIn') === 'true') {
-            $rp['token'] = $request->getAttribute('newToken');
-
-            $bodyIn = [];
-
-            $bodyIn = $request->getParsedBody();
-            @$nuevaMarca = $bodyIn['data']['marca'];
-            @$iniciales = $bodyIn['data']['iniciales'];
-
-            $marca = new Marca($this->logger);
-
-            $res = $marca->insertarMarca($nuevaMarca, $iniciales);
-
-            if (is_numeric($res)) {
-                return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus($res)
-                    ->withJson(null);
-            } else {
-                $rp['data'] = $res;
-                return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus(200)
-                    ->withJson($rp);
-            }
-
-        }
-        return $response->withHeader('Content-type', 'application/json')
-            ->withStatus(401)
-            ->withJson(null);
-    });
-
-    /** DELETE */
-    $app->delete('/{idMarca}', function (Request $request, Response $response, array $args) {
-        if ($request->getAttribute('isLoggedIn') === 'true') {
-            $rp['token'] = $request->getAttribute('newToken');
-
-            $res = 400;
-            if (is_numeric($args['idMarca'])) {
                 $marca = new Marca($this->logger);
 
-                $res = $marca->eliminarMarca($args['idMarca']);
+                $res = $marca->listarMarcas();
+            } else
+            if ($request->isPost()) {
+                $bodyIn = [];
+
+                $bodyIn = $request->getParsedBody();
+                @$nuevaMarca = $bodyIn['data']['marca'];
+                @$iniciales = $bodyIn['data']['iniciales'];
+
+                $marca = new Marca($this->logger);
+
+                $res = $marca->insertarMarca($nuevaMarca, $iniciales);
+            } else {
+                $res = 405;
             }
 
             if (is_numeric($res)) {
@@ -95,5 +48,36 @@ $app->group('/marcas', function () use ($app) {
             ->withStatus(401)
             ->withJson(null);
     });
+    $app->map(['PUT', 'DELETE'], '/{idMarca}', function (Request $request, Response $response, array $args) {
+        if ($request->getAttribute('isLoggedIn') === 'true') {
+            $rp['token'] = $request->getAttribute('newToken');
 
+            if ($request->$request->isDelete()) {
+                if (is_numeric($args['idMarca'])) {
+                    
+                    $marca = new Marca($this->logger);
+
+                    $res = $marca->eliminarMarca($args['idMarca']);
+                }
+
+            } else {
+                $res = 404;
+            }
+
+            if (is_numeric($res)) {
+                return $response->withHeader('Content-type', 'application/json')
+                    ->withStatus($res)
+                    ->withJson(null);
+            } else {
+                $rp['data'] = $res;
+                return $response->withHeader('Content-type', 'application/json')
+                    ->withStatus(200)
+                    ->withJson($rp);
+            }
+
+        }
+        return $response->withHeader('Content-type', 'application/json')
+            ->withStatus(401)
+            ->withJson(null);
+    });
 })->add($guardMiddleware);

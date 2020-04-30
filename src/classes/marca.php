@@ -14,8 +14,7 @@ class Marca
 
     public function listarMarcas()
     {
-        /**HAY QUE MEJORAR ESTA RESPUESTA */
-        $sql = "SELECT * FROM vhMarca";
+        $sql = "SELECT idvhMarca AS Id, vhMarca AS Marca, vhIniciales AS Iniciales FROM vhMarca;";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute();
