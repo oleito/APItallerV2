@@ -11,3 +11,5 @@ require_once "tipos.php";
 require_once "modelos.php";
 
 require_once "seguros.php";
+
+require_once "sectores.php";

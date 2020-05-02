@@ -18,3 +18,5 @@ require_once "tipo.php";
 require_once "modelo.php";
 
 require_once "seguro.php";
+
+require_once "sector.php";
