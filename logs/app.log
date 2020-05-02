@@ -1,0 +1,7 @@
+[2020-05-01T23:13:21.156858-03:00] REPORTES.WARNING: insertarSector() -  ["SQLSTATE[42S02]: Base table or view not found: 1146 Table 'cdgwebco_tallerv2.sector' doesn't exist"] []
+[2020-05-01T23:13:49.186221-03:00] REPORTES.WARNING: insertarSector() -  ["SQLSTATE[42S02]: Base table or view not found: 1146 Table 'cdgwebco_tallerv2.sectores' doesn't exist"] []
+[2020-05-01T23:14:30.112450-03:00] REPORTES.WARNING: insertarSector() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'idSector' in 'field list'"] []
+[2020-05-01T23:15:01.833075-03:00] REPORTES.WARNING: insertarSector() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sector' in 'field list'"] []
+[2020-05-01T23:15:43.368779-03:00] REPORTES.WARNING: listarSectors() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'idSector' in 'field list'"] []
+[2020-05-01T23:16:04.330242-03:00] REPORTES.WARNING: listarSectors() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Sector' in 'field list'"] []
+[2020-05-01T23:16:59.937159-03:00] REPORTES.WARNING: eliminar Sector() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'chSector.idSector' in 'where clause'"] []
