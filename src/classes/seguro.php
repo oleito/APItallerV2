@@ -1,6 +1,6 @@
 <?php
 
-class Marca
+class Seguro
 {
     private $conn;
     private $logger;
@@ -12,49 +12,45 @@ class Marca
         $this->conn = $pdoMysql->conectar();
     }
 
-    public function listarMarcas()
+    public function listarSeguros()
     {
-        $sql = "SELECT idvhMarca AS Id, vhMarca AS Marca, vhIniciales AS Iniciales FROM vhMarca;";
+        $sql = "SELECT idseguro AS Id, seguro AS Seguro FROM seguro;";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute();
             return $sth->fetchAll();
         } catch (Exception $e) {
-            $this->logger->warning('listarMarcas() - ', [$e->getMessage()]);
+            $this->logger->warning('listarSeguros() - ', [$e->getMessage()]);
             return 500;
         }
     }
 
-    public function insertarMarca($marca, $iniciales)
+    public function insertarSeguro($seguro)
     {
-        $sql = "INSERT INTO vhMarca
-                (idvhMarca, vhMarca, vhIniciales)
-                VALUES
-                (NULL, :marca, :iniciales);";
+        $sql = "INSERT INTO `seguro` (`idseguro`, `seguro`) VALUES (NULL, :seguro);";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute(array(
-                ':marca' => $marca,
-                ':iniciales' => $iniciales,
+                ':seguro' => $seguro,
             ));
-            return $this->listarMarcas();
+            return $this->listarSeguros();
         } catch (Exception $e) {
-            $this->logger->warning('insertarMarca() - ', [$e->getMessage()]);
+            $this->logger->warning('insertarSeguro() - ', [$e->getMessage()]);
             return 500;
         }
     }
 
-    public function eliminarMarca($idMarca)
+    public function eliminarSeguro($idSeguro)
     {
-        $sql = "DELETE FROM vhMarca WHERE vhMarca.idvhMarca = :idMarca ;";
+        $sql = "DELETE FROM seguro WHERE seguro.idseguro = :idSeguro ;";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute(array(
-                ':idMarca' => $idMarca,
+                ':idSeguro' => $idSeguro,
             ));
-            return $this->listarMarcas();
+            return $this->listarSeguros();
         } catch (Exception $e) {
-            $this->logger->warning('eliminar marca() - ', [$e->getMessage()]);
+            $this->logger->warning('eliminar Seguro() - ', [$e->getMessage()]);
             return 500;
         }
     }

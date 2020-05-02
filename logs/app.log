@@ -1,3 +1,0 @@
-[2020-04-30T20:44:11.518069-03:00] REPORTES.WARNING: insertarModelo() -  ["SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'vhModelo' cannot be null"] []
-[2020-04-30T20:44:33.598875-03:00] REPORTES.WARNING: insertarModelo() -  ["SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'vhTipo_idvhTipo' cannot be null"] []
-[2020-04-30T20:44:55.986021-03:00] REPORTES.WARNING: insertarModelo() -  ["SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`cdgwebco_tallerv2`.`vhModelo`, CONSTRAINT `fk_vhModelo_vhTipo1` FOREIGN KEY (`vhTipo_idvhTipo`) REFERENCES `vhTipo` (`idvhTipo`) ON DELETE NO ACTION ON UPDATE NO ACTION)"] []

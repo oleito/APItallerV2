@@ -12,7 +12,7 @@ class token
      * @var string
      */
     private $secret = 'rCaDNN0VxJ0MLMYxA0BmGeBBlkPXneyN';
-    private $timeOut = 1000; // Minutos de vida del token
+    private $timeOut = 10000000000; // Minutos de vida del token
     private $expire = null;
     /**
      * Undocumented function
