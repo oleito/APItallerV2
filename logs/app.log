@@ -1,7 +1,1 @@
-[2020-05-01T23:13:21.156858-03:00] REPORTES.WARNING: insertarSector() -  ["SQLSTATE[42S02]: Base table or view not found: 1146 Table 'cdgwebco_tallerv2.sector' doesn't exist"] []
-[2020-05-01T23:13:49.186221-03:00] REPORTES.WARNING: insertarSector() -  ["SQLSTATE[42S02]: Base table or view not found: 1146 Table 'cdgwebco_tallerv2.sectores' doesn't exist"] []
-[2020-05-01T23:14:30.112450-03:00] REPORTES.WARNING: insertarSector() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'idSector' in 'field list'"] []
-[2020-05-01T23:15:01.833075-03:00] REPORTES.WARNING: insertarSector() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sector' in 'field list'"] []
-[2020-05-01T23:15:43.368779-03:00] REPORTES.WARNING: listarSectors() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'idSector' in 'field list'"] []
-[2020-05-01T23:16:04.330242-03:00] REPORTES.WARNING: listarSectors() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Sector' in 'field list'"] []
-[2020-05-01T23:16:59.937159-03:00] REPORTES.WARNING: eliminar Sector() -  ["SQLSTATE[42S22]: Column not found: 1054 Unknown column 'chSector.idSector' in 'where clause'"] []
+[2020-05-03T19:31:03.567802-03:00] REPORTES.WARNING: eliminar Modelo() -  ["SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`cdgwebco_tallerv2`.`vehiculo`, CONSTRAINT `fk_vehiculo_vhModelo1` FOREIGN KEY (`vhModelo_idvhModelo`) REFERENCES `vhModelo` (`idvhModelo`) ON DELETE NO ACTION ON UPDATE NO ACTION)"] []

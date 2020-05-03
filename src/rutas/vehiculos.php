@@ -4,31 +4,32 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * RUTA
- * Modelos
+ * Vehiculos
  */
 
-$app->group('/modelos', function () use ($app) {
+$app->group('/vehiculos', function () use ($app) {
     $app->map(['GET', 'POST'], '', function (Request $request, Response $response, array $args) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
             if ($request->isGet()) {
 
-                $modelo = new Modelo($this->logger);
+                $vehiculo = new Vehiculo($this->logger);
 
-                $res = $modelo->listarModelos();
+                $res = $vehiculo->listarVehiculos();
             } else
             if ($request->isPost()) {
                 $bodyIn = [];
 
                 $bodyIn = $request->getParsedBody();
-                @$nuevaModelo = $bodyIn['data']['modelo'];
-                @$marca = $bodyIn['data']['marca'];
-                @$tipo = $bodyIn['data']['tipo'];
+                @$modelo = $bodyIn['data']['modelo'];
+                @$patente = $bodyIn['data']['patente'];
+                @$vin = $bodyIn['data']['vin'];
+                @$color = $bodyIn['data']['color'];
+             
+                $vehiculo = new Vehiculo($this->logger);
 
-                $modelo = new Modelo($this->logger);
-
-                $res = $modelo->insertarModelo($nuevaModelo, $marca, $tipo);
+                $res = $vehiculo->insertarVehiculo($modelo, $patente, $vin, $color);
             } else {
                 $res = 405;
             }
@@ -49,16 +50,16 @@ $app->group('/modelos', function () use ($app) {
             ->withStatus(401)
             ->withJson(null);
     });
-    $app->map(['PUT', 'DELETE'], '/{idModelo}', function (Request $request, Response $response, array $args) {
+    $app->map(['PUT', 'DELETE'], '/{idVehiculo}', function (Request $request, Response $response, array $args) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
             if ($request->isDelete()) {
-                if (is_numeric($args['idModelo'])) {
+                if (is_numeric($args['idVehiculo'])) {
 
-                    $modelo = new Modelo($this->logger);
+                    $vehiculo = new Vehiculo($this->logger);
 
-                    $res = $modelo->eliminarModelo($args['idModelo']);
+                    $res = $vehiculo->eliminarVehiculo($args['idVehiculo']);
                 }
 
             } else {
