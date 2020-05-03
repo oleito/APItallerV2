@@ -12,12 +12,14 @@ class Movimiento
         $this->conn = $pdoMysql->conectar();
     }
 
-    public function listarMovimientos()
+    public function listarMovimientos($idOrden)
     {
-        $sql = "SELECT * FROM movimiento;";
+        $sql = "SELECT * FROM `movimiento` WHERE orden_idorden = :idOrden;";
         try {
             $sth = $this->conn->prepare($sql);
-            $sth->execute();
+            $sth->execute(array(
+                ':idOrden'=>$idOrden
+            ));
             return $sth->fetchAll();
         } catch (Exception $e) {
             $this->logger->warning('listarMovimientos() - ', [$e->getMessage()]);
@@ -41,14 +43,14 @@ class Movimiento
                 ':usuario' => $usuario,
                 ':sector' => $sector,
             ));
-            return $this->listarMovimientos();
+            return $this->listarMovimientos($orden);
         } catch (Exception $e) {
             $this->logger->warning('insertarMovimiento() - ', [$e->getMessage()]);
             return 500;
         }
     }
 
-    public function eliminarMovimiento($idMovimiento)
+    public function eliminarMovimiento($idMovimiento, $idOrden)
     {
         $sql = "DELETE FROM `movimiento` WHERE `movimiento`.`idmovimiento` = :idMovimiento;";
         try {
@@ -56,7 +58,7 @@ class Movimiento
             $sth->execute(array(
                 ':idMovimiento' => $idMovimiento,
             ));
-            return $this->listarMovimientos();
+            return $this->listarMovimientos($idOrden);
         } catch (Exception $e) {
             $this->logger->warning('eliminar Movimiento() - ', [$e->getMessage()]);
             return 500;
