@@ -15,4 +15,5 @@ require_once "seguros.php";
 require_once "sectores.php";
 
 require_once "vehiculos.php";
+require_once "ordenes.php";
 require_once "movimientos.php";
