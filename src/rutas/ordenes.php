@@ -183,13 +183,13 @@ $app->group('/ordenes', function () use ($app) {
                 $bodyIn = [];
 
                 $bodyIn = $request->getParsedBody();
-                @$nuevaPieza = $bodyIn['data']['pieza'];
+                @$piezas = $bodyIn['data']['piezas'];
                 @$idOrden = $args['idOrden'];
-                @$accion = $bodyIn['data']['accion'];
+
 
                 $pieza = new Pieza($this->logger);
 
-                $res = $pieza->insertarPieza($nuevaPieza, $idOrden, $accion);
+                $res = $pieza->insertarPieza($idOrden, $piezas);
             } else {
                 $res = 405;
             }
