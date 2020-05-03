@@ -25,21 +25,22 @@ class Orden
         }
     }
 
-    public function insertarOrden($vehiculo, $seguro, $fecha, $repuestos, $observacion)
+    public function insertarOrden($idOrden, $vehiculo, $seguro, $fecha, $repuestos, $observacion)
     {
         $sql = "INSERT
                 INTO `orden`
                 (`idorden`, `vehiculo_idvehiculo`, `seguro_idseguro`, `orden_entrega_pactada`, `orden_repuestos`, `orden_observaciones`)
                 VALUES
-                (NULL, :vehiculo, :seguro, :fecha, :repuestos, :observacion);";
+                (:idOrden, :vehiculo, :seguro, :fecha, :repuestos, :observacion);";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute(array(
+                ':idOrden' => $idOrden,
                 ':vehiculo' => $vehiculo,
                 ':seguro' => $seguro,
                 ':fecha' => $fecha,
                 ':repuestos' => $repuestos,
-                ':observacion' => $observacion,
+                ':observacion' => $observacion
             ));
             return $this->listarOrdenes();
         } catch (Exception $e) {

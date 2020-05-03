@@ -22,6 +22,7 @@ $app->group('/ordenes', function () use ($app) {
                 $bodyIn = [];
 
                 $bodyIn = $request->getParsedBody();
+                @$idOrden = $bodyIn['data']['orden'];
                 @$vehiculo = $bodyIn['data']['vehiculo'];
                 @$seguro = $bodyIn['data']['seguro'];
                 @$fecha = $bodyIn['data']['fechaentrega'];
@@ -30,7 +31,7 @@ $app->group('/ordenes', function () use ($app) {
              
                 $orden = new Orden($this->logger);
 
-                $res = $orden->insertarOrden($vehiculo, $seguro, $fecha, $repuestos, $observacion);
+                $res = $orden->insertarOrden($idOrden, $vehiculo, $seguro, $fecha, $repuestos, $observacion);
             } else {
                 $res = 405;
             }
