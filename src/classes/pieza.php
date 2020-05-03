@@ -40,7 +40,7 @@ class Pieza
             $sth->execute(array(
                 ':pieza' => $pieza,
                 ':orden' => $orden,
-                ':accion' => $accion,
+                ':accion' => $accion
             ));
             return $this->listarPiezas($orden);
         } catch (Exception $e) {
