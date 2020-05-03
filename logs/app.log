@@ -1,0 +1,1 @@
+[2020-05-03T17:45:30.832014-03:00] REPORTES.WARNING: insertarMovimiento() -  ["SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`cdgwebco_tallerv2`.`movimiento`, CONSTRAINT `fk_movimiento_orden1` FOREIGN KEY (`orden_idorden`) REFERENCES `orden` (`idorden`) ON DELETE NO ACTION ON UPDATE NO ACTION)"] []
