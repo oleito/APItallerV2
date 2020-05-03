@@ -27,7 +27,7 @@ class Pieza
         }
     }
 
-    public function insertarPieza($pieza, $orden, $accion)
+    public function insertarPieza($orden, $piezas)
     {
         $sql = "INSERT
                 INTO `pieza`
@@ -37,11 +37,14 @@ class Pieza
 
         try {
             $sth = $this->conn->prepare($sql);
-            $sth->execute(array(
-                ':pieza' => $pieza,
+            foreach ($piezas as $pieza) {
+                $sth->execute(array(
+                ':pieza' => $pieza['pieza'],
                 ':orden' => $orden,
-                ':accion' => $accion
+                ':accion' => $pieza['accion']
             ));
+            }
+            
             return $this->listarPiezas($orden);
         } catch (Exception $e) {
             $this->logger->warning('insertarPieza() - ', [$e->getMessage()]);
