@@ -1,0 +1,1 @@
+[2020-05-03T16:36:09.374345-03:00] REPORTES.WARNING: insertarorden() -  ["SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'orden_entrega_pactada' cannot be null"] []
