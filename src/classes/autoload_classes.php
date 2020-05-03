@@ -20,3 +20,5 @@ require_once "modelo.php";
 require_once "seguro.php";
 
 require_once "sector.php";
+
+require_once "vehiculo.php";
