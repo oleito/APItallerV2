@@ -25,6 +25,46 @@ class Sector
         }
     }
 
+    public function listarVehiculosEnSectores()
+    {
+        //return "aca van los vehiculos agrupados en sectores";
+        $bodyOut = [];
+        try {
+            $sql = "SELECT idchSector AS Id, chSector AS Sector FROM chSector;";
+            $sth = $this->conn->prepare($sql);
+            $sth->execute();
+            $sectores = $sth->fetchAll();
+
+            $sql = "SELECT *,
+                            (SELECT movimiento.chSector_idchSector FROM movimiento
+                            WHERE movimiento.orden_idorden=orden.idorden ORDER
+                            BY movimiento.idmovimiento DESC LIMIT 1) as sector
+                        FROM `orden`";
+
+            $sth = $this->conn->prepare($sql);
+            $sth->execute();
+            $ordenes = $sth->fetchAll();
+
+            foreach ($sectores as $sector) {
+                $tmp = [];
+                foreach ($ordenes as $orden) {
+
+                    if ($sector['Id'] === $orden['sector']) {
+                        array_push($tmp, $orden);
+                    }
+                }
+                $data = array('Sector' => $sector['Sector'],
+                    'vehiculos' => $tmp);
+                array_push($bodyOut, $data);
+            }
+
+            return $bodyOut;
+        } catch (Exception $e) {
+            $this->logger->warning('listarSectores() - ', [$e->getMessage()]);
+            return 500;
+        }
+    }
+
     public function insertarSector($sector)
     {
         $sql = "INSERT INTO `chSector` (`idchSector`, `chSector`) VALUES (NULL, :sector);";
