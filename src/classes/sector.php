@@ -51,7 +51,7 @@ class Sector
                         BY movimiento.idmovimiento DESC LIMIT 1) AS  IdSector,
                         (SELECT chSector.chSector FROM movimiento JOIN chSector ON chSector.idchSector=movimiento.chSector_idchSector
                         WHERE movimiento.orden_idorden=orden.idorden ORDER
-                        BY movimiento.idmovimiento DESC LIMIT 1) AS  sector,
+                        BY movimiento.idmovimiento DESC LIMIT 1) AS  Sector,
                     orden.orden_observaciones AS  Observaciones
                     FROM orden
                     JOIN vehiculo ON vehiculo.idvehiculo=orden.vehiculo_idvehiculo
