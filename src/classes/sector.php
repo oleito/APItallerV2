@@ -35,11 +35,29 @@ class Sector
             $sth->execute();
             $sectores = $sth->fetchAll();
 
-            $sql = "SELECT *,
-                            (SELECT movimiento.chSector_idchSector FROM movimiento
-                            WHERE movimiento.orden_idorden=orden.idorden ORDER
-                            BY movimiento.idmovimiento DESC LIMIT 1) as sector
-                        FROM `orden`";
+            $sql = "SELECT
+                    orden.idorden AS Orden,
+                    orden.orden_entrega_pactada AS  FechaEntrega,
+                    seguro.seguro AS  Seguro,
+                    orden.orden_repuestos AS  EsperaRepuestos,
+                    vehiculo.idvehiculo AS IdVehiculo,
+                    vehiculo.vehiculo_patente AS  Patente,
+                    vehiculo.vehiculo_vin AS  Vin,
+                    vhMarca.vhMarca AS  Marca,
+                    vhModelo.vhModelo AS  Modelo,
+                    vehiculo.vehiculo_color AS  Color,
+                        (SELECT chSector.idchSector FROM movimiento JOIN chSector ON chSector.idchSector=movimiento.chSector_idchSector
+                        WHERE movimiento.orden_idorden=orden.idorden ORDER
+                        BY movimiento.idmovimiento DESC LIMIT 1) AS  IdSector,
+                        (SELECT chSector.chSector FROM movimiento JOIN chSector ON chSector.idchSector=movimiento.chSector_idchSector
+                        WHERE movimiento.orden_idorden=orden.idorden ORDER
+                        BY movimiento.idmovimiento DESC LIMIT 1) AS  sector,
+                    orden.orden_observaciones AS  Observaciones
+                    FROM orden
+                    JOIN vehiculo ON vehiculo.idvehiculo=orden.vehiculo_idvehiculo
+                    JOIN vhModelo ON vehiculo.vhModelo_idvhModelo= vhModelo.idvhModelo
+                    JOIN vhMarca ON vhModelo.vhMarca_idvhMarca= vhMarca.idvhMarca
+                    JOIN seguro ON orden.seguro_idseguro=seguro.idseguro;";
 
             $sth = $this->conn->prepare($sql);
             $sth->execute();
@@ -49,7 +67,7 @@ class Sector
                 $tmp = [];
                 foreach ($ordenes as $orden) {
 
-                    if ($sector['Id'] === $orden['sector']) {
+                    if ($sector['Id'] === $orden['IdSector']) {
                         array_push($tmp, $orden);
                     }
                 }
