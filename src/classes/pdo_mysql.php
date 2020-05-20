@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once './../src/config/db.php';
 
 class pdoMysql
@@ -38,6 +38,7 @@ class pdoMysql
                 $this->dbPass
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             $this->logger->warning('PDO - mysql->conectar() - ', [$e->getMessage()]);
             return null;
@@ -51,7 +52,7 @@ class pdoMysql
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute($data);
-            
+
             return $sth->fetchAll();
 
         } catch (Exception $e) {
