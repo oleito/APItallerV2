@@ -30,34 +30,25 @@ class Sector
         //return "aca van los vehiculos agrupados en sectores";
         $bodyOut = [];
         try {
-            $sql = "SELECT idchSector AS Id, chSector AS Sector FROM chSector;";
+            $sql = "SELECT idchSector AS Id, chSector AS sector FROM chSector;";
             $sth = $this->conn->prepare($sql);
             $sth->execute();
             $sectores = $sth->fetchAll();
 
-            $sql = "SELECT
-                    orden.idorden AS Orden,
-                    orden.orden_entrega_pactada AS  FechaEntrega,
-                    seguro.seguro AS  Seguro,
-                    orden.orden_repuestos AS  EsperaRepuestos,
-                    vehiculo.idvehiculo AS IdVehiculo,
-                    vehiculo.vehiculo_patente AS  Patente,
-                    vehiculo.vehiculo_vin AS  Vin,
-                    vhMarca.vhMarca AS  Marca,
-                    vhModelo.vhModelo AS  Modelo,
-                    vehiculo.vehiculo_color AS  Color,
-                        (SELECT chSector.idchSector FROM movimiento JOIN chSector ON chSector.idchSector=movimiento.chSector_idchSector
-                        WHERE movimiento.orden_idorden=orden.idorden ORDER
-                        BY movimiento.idmovimiento DESC LIMIT 1) AS  IdSector,
+            $sql = "SELECT *, (SELECT chSector.idchSector FROM movimiento JOIN chSector ON chSector.idchSector=movimiento.chSector_idchSector
+                        WHERE movimiento.orden_idreferencia =orden.idreferencia ORDER
+                        BY movimiento.idmovimiento DESC LIMIT 1) AS  idSector,
                         (SELECT chSector.chSector FROM movimiento JOIN chSector ON chSector.idchSector=movimiento.chSector_idchSector
-                        WHERE movimiento.orden_idorden=orden.idorden ORDER
-                        BY movimiento.idmovimiento DESC LIMIT 1) AS  Sector,
-                    orden.orden_observaciones AS  Observaciones
-                    FROM orden
-                    JOIN vehiculo ON vehiculo.idvehiculo=orden.vehiculo_idvehiculo
-                    JOIN vhModelo ON vehiculo.vhModelo_idvhModelo= vhModelo.idvhModelo
-                    JOIN vhMarca ON vhModelo.vhMarca_idvhMarca= vhMarca.idvhMarca
-                    JOIN seguro ON orden.seguro_idseguro=seguro.idseguro;";
+                        WHERE movimiento.orden_idreferencia =orden.idreferencia ORDER
+                        BY movimiento.idmovimiento DESC LIMIT 1) AS  sector
+                    FROM orden";
+
+            $sql = "SELECT 
+                        idreferencia AS referencia, 
+                        (SELECT chSector.idchSector FROM movimiento JOIN chSector ON chSector.idchSector=movimiento.chSector_idchSector WHERE movimiento.orden_idreferencia =orden.idreferencia ORDER BY movimiento.idmovimiento DESC LIMIT 1) AS idSector, 
+                        (SELECT chSector.chSector FROM movimiento JOIN chSector ON chSector.idchSector=movimiento.chSector_idchSector WHERE movimiento.orden_idreferencia =orden.idreferencia ORDER BY movimiento.idmovimiento DESC LIMIT 1) AS sector 
+                    FROM orden 
+                    WHERE orden_activo=1";
 
             $sth = $this->conn->prepare($sql);
             $sth->execute();
@@ -67,11 +58,11 @@ class Sector
                 $tmp = [];
                 foreach ($ordenes as $orden) {
 
-                    if ($sector['Id'] === $orden['IdSector']) {
+                    if ($sector['Id'] === $orden['idSector']) {
                         array_push($tmp, $orden);
                     }
                 }
-                $data = array('Sector' => $sector['Sector'],
+                $data = array('sector' => $sector['sector'],
                     'vehiculos' => $tmp);
                 array_push($bodyOut, $data);
             }

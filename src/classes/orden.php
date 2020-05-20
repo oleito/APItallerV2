@@ -20,7 +20,7 @@ class Orden
             $sth->execute();
             return $sth->fetchAll();
         } catch (Exception $e) {
-            $this->logger->warning('listarOrdens() - ', [$e->getMessage()]);
+            $this->logger->warning('listarOrdenes() - ', [$e->getMessage()]);
             return 500;
         }
     }
@@ -40,9 +40,55 @@ class Orden
                 ':seguro' => $seguro,
                 ':fecha' => $fecha,
                 ':repuestos' => $repuestos,
-                ':observacion' => $observacion
+                ':observacion' => $observacion,
             ));
+
             return $this->listarOrdenes();
+
+        } catch (Exception $e) {
+            $this->logger->warning('insertarorden() - ', [$e->getMessage()]);
+            return 500;
+        }
+    }
+
+    public function insertarReferencia($idReferencia)
+    {
+        try {
+            /** INSERTA LA ORDEN */
+            $sql = "INSERT INTO `orden`
+                ( `idreferencia`)
+                VALUES
+                ( :idReferencia);";
+
+            $sth = $this->conn->prepare($sql);
+            $sth->execute(array(
+                ':idReferencia' => $idReferencia,
+            ));
+
+            $sql = "SELECT
+                    idorden AS orden,
+                    idreferencia AS referencia,
+                    orden_siniestro AS siniestro,
+                    vehiculo_idvehiculo AS idvehiculo,
+                    orden_entrega_pactada AS fecha_entrega,
+                    orden_observaciones AS observaciones,
+                    seguro_idseguro AS seguro,
+                    orden_activo AS activo
+
+                    FROM orden WHERE orden.idreferencia = :idReferencia;
+                    
+                    INSERT INTO `movimiento`
+                    ( `movimiento_fecha`, `usuario_idusuario`, `chSector_idchSector`,  `orden_idreferencia`)
+                    VALUES
+                    (:fechahora , '1', '1', :idReferencia);";
+
+            $sth = $this->conn->prepare($sql);
+            $sth->execute(array(
+                ':idReferencia' => $idReferencia,
+                ':fechahora' => date("Y-m-d H:i:s"),
+            ));
+            return $sth->fetch();
+
         } catch (Exception $e) {
             $this->logger->warning('insertarorden() - ', [$e->getMessage()]);
             return 500;

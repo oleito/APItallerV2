@@ -22,6 +22,12 @@ $app->group('/ordenes', function () use ($app) {
                 $bodyIn = [];
 
                 $bodyIn = $request->getParsedBody();
+                $dataIn = $bodyIn['data'];
+                if (array_key_exists('referencia', $dataIn)) {
+                    $orden = new Orden($this->logger);
+                    $res = $orden->insertarReferencia($dataIn['referencia']);
+                }
+
                 @$idOrden = $bodyIn['data']['orden'];
                 @$vehiculo = $bodyIn['data']['vehiculo'];
                 @$seguro = $bodyIn['data']['seguro'];
@@ -31,7 +37,7 @@ $app->group('/ordenes', function () use ($app) {
 
                 $orden = new Orden($this->logger);
 
-                $res = $orden->insertarOrden($idOrden, $vehiculo, $seguro, $fecha, $repuestos, $observacion);
+                // $res = $orden->insertarOrden($idOrden, $vehiculo, $seguro, $fecha, $repuestos, $observacion);
             } else {
                 $res = 405;
             }
@@ -185,7 +191,6 @@ $app->group('/ordenes', function () use ($app) {
                 $bodyIn = $request->getParsedBody();
                 @$piezas = $bodyIn['data']['piezas'];
                 @$idOrden = $args['idOrden'];
-
 
                 $pieza = new Pieza($this->logger);
 
