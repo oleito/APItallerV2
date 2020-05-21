@@ -23,10 +23,11 @@ $app->group('/seguros', function () use ($app) {
 
                 $bodyIn = $request->getParsedBody();
                 @$nuevoSeguro = $bodyIn['data']['seguro'];
-             
+
                 $seguro = new Seguro($this->logger);
 
                 $res = $seguro->insertarSeguro($nuevoSeguro);
+
             } else {
                 $res = 405;
             }

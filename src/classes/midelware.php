@@ -5,7 +5,8 @@
 $guardMiddleware = function ($request, $response, $next) {
 
     $token = new token();
-    if ($request->hasHeader('token') && $token->checkToken($this->request->getHeaderLine('token'))) {
+    if ($token->checkToken($this->request->getHeaderLine('token'))) {
+    // if ($request->hasHeader('token') && $token->checkToken($this->request->getHeaderLine('token'))) {
 
         $request = $request->withAttribute('isLoggedIn', 'true');
         $request = $request->withAttribute('newToken', $token->updateToken($this->request->getHeaderLine('token')));

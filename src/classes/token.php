@@ -39,6 +39,8 @@ class token
      */
     public function setToken($usuario)
     {
+        return "Token.de.prueba";
+
         //Define los Headers del token
         $header = self::base64url_encode(json_encode([
             'alg' => 'HS256',
@@ -62,6 +64,8 @@ class token
      */
     public function checkToken($token)
     {
+        //FOR TESTIN ONLY
+        return true;
 
         //Divide el Token en 3 Partes
         if ($t = explode('.', $token)) {
@@ -97,7 +101,7 @@ class token
      */
     public function updateToken($token)
     {
-        //return "Token de prueba";
+        return "Token.de.prueba";
 
         //Divide el Token en 3 Partes
         if ($t = explode('.', $token)) {

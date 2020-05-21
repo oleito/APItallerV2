@@ -26,7 +26,7 @@ $app->group('/vehiculos', function () use ($app) {
                 @$patente = $bodyIn['data']['patente'];
                 @$vin = $bodyIn['data']['vin'];
                 @$color = $bodyIn['data']['color'];
-             
+
                 $vehiculo = new Vehiculo($this->logger);
 
                 $res = $vehiculo->insertarVehiculo($modelo, $patente, $vin, $color);
@@ -54,13 +54,22 @@ $app->group('/vehiculos', function () use ($app) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
 
-            if ($request->isDelete()) {
-                if (is_numeric($args['idVehiculo'])) {
+            if ($request->isPut() && is_numeric($args['idVehiculo'])) {
 
-                    $vehiculo = new Vehiculo($this->logger);
+                $vehiculo = new Vehiculo($this->logger);
 
-                    $res = $vehiculo->eliminarVehiculo($args['idVehiculo']);
-                }
+                $bodyIn = $request->getParsedBody();
+                @$patente = $bodyIn['data']['patente'];
+                @$vin = $bodyIn['data']['vin'];
+                @$color = $bodyIn['data']['color'];
+
+                $res = $vehiculo->actualizarVehiculo($args['idVehiculo'], $patente, $vin, $color);
+
+            } else if ($request->isDelete() && is_numeric($args['idVehiculo'])) {
+
+                $vehiculo = new Vehiculo($this->logger);
+
+                $res = $vehiculo->eliminarVehiculo($args['idVehiculo']);
 
             } else {
                 $res = 404;
