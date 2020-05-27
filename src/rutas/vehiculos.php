@@ -59,11 +59,16 @@ $app->group('/vehiculos', function () use ($app) {
                 $vehiculo = new Vehiculo($this->logger);
 
                 $bodyIn = $request->getParsedBody();
-                @$patente = $bodyIn['data']['patente'];
-                @$vin = $bodyIn['data']['vin'];
-                @$color = $bodyIn['data']['color'];
+                if (array_key_exists('idModelo', $bodyIn['data'])) {
+                    $res = $vehiculo->actualizarModeloVehiculo($args['idVehiculo'], $bodyIn['data']['idModelo']);
+                } else {
 
-                $res = $vehiculo->actualizarVehiculo($args['idVehiculo'], $patente, $vin, $color);
+                    @$patente = $bodyIn['data']['patente'];
+                    @$vin = $bodyIn['data']['vin'];
+                    @$color = $bodyIn['data']['color'];
+
+                    $res = $vehiculo->actualizarDatosVehiculo($args['idVehiculo'], $patente, $vin, $color);
+                }
 
             } else if ($request->isDelete() && is_numeric($args['idVehiculo'])) {
 

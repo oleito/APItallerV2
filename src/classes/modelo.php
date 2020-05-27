@@ -69,4 +69,28 @@ class Modelo
         }
     }
 
+    public function actualizarModelo($idMarca, $idModelo, $tipo)
+    {
+        try {
+            $sql = "UPDATE `vhModelo` SET 
+                    `vhTipo_idvhTipo` = :tipo 
+                    WHERE `vhModelo`.`idvhModelo` = :idModelo;";
+
+            $sth = $this->conn->prepare($sql);
+
+            $sth->execute(array(
+                ':tipo' => $tipo,
+                ':idModelo' => $idModelo,
+            ));
+
+            return $this->listarModelos($idMarca);
+
+        } catch (Exception $e) {
+            $this->logger->warning('actualizarModelo() - ', [$e->getMessage()]);
+            return 500;
+        }
+
+    }
+    
+
 }

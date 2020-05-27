@@ -26,13 +26,13 @@ class Vehiculo
     }
     public function detalleVehiculo($idvehiculo)
     {
-        $sql = "SELECT 
-                    idvehiculo, vehiculo_patente AS patente, 
-                    vehiculo_vin AS 
-                    vin, vehiculo_color AS color 
-                FROM 
-                    vehiculo 
-                WHERE 
+        $sql = "SELECT
+                    idvehiculo, vehiculo_patente AS patente,
+                    vehiculo_vin AS
+                    vin, vehiculo_color AS color
+                FROM
+                    vehiculo
+                WHERE
                     idvehiculo =:idvehiculo;";
         try {
             $sth = $this->conn->prepare($sql);
@@ -69,7 +69,7 @@ class Vehiculo
         }
     }
 
-    public function actualizarVehiculo($idvehiculo, $patente, $vin, $color)
+    public function actualizarDatosVehiculo($idvehiculo, $patente, $vin, $color)
     {
         try {
             /** INSERTA LA ORDEN */
@@ -95,6 +95,30 @@ class Vehiculo
 
         } catch (Exception $e) {
             $this->logger->warning('insertarSeguroEnReferencia() - ', [$e->getMessage()]);
+            return 500;
+        }
+
+    }
+
+    public function actualizarModeloVehiculo($idvehiculo, $idModelo)
+    {
+        try {
+
+            $sql = "UPDATE `vehiculo`
+            SET `vhModelo_idvhModelo` = :idModelo
+            WHERE `vehiculo`.`idvehiculo` = :idvehiculo";
+
+            $sth = $this->conn->prepare($sql);
+
+            $sth->execute(array(
+                ':idModelo' => $idModelo,
+                ':idvehiculo' => $idvehiculo,
+            ));
+
+            return $this->detalleVehiculo($idvehiculo);
+
+        } catch (Exception $e) {
+            $this->logger->warning('actualizarModeloVehiculo()? - ', [$e->getMessage()]);
             return 500;
         }
 

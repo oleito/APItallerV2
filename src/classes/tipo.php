@@ -23,7 +23,15 @@ class Tipo
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute();
-            return $sth->fetchAll();
+            $res = $sth->fetchAll();
+            $bodyOut = [];
+
+            foreach ($res as $r) {
+                $r['Img'] = "http://" . $_SERVER["SERVER_NAME"] . dirname($_SERVER['PHP_SELF'], 2) . '/recursos/' . $r['Img'];
+                array_push($bodyOut, $r);
+            }
+
+            return $bodyOut;
         } catch (Exception $e) {
             $this->logger->warning('listarTipos() - ', [$e->getMessage()]);
             return 500;

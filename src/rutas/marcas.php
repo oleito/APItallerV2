@@ -127,11 +127,25 @@ $app->group('/marcas', function () use ($app) {
             $rp['token'] = $request->getAttribute('newToken');
 
             if ($request->isDelete()) {
-                if (is_numeric($args['idModelo'])) {
+                if (is_numeric($args['idModelo']
+                    && is_numeric($args['idMarca']))) {
 
                     $modelo = new Modelo($this->logger);
 
                     $res = $modelo->eliminarModelo($args['idMarca'], $args['idModelo']);
+                }
+
+            } else if ($request->isPut()) {
+                if (is_numeric($args['idModelo'])
+                    && is_numeric($args['idMarca'])) {
+
+                    $bodyIn = $request->getParsedBody();
+                    @$marca = $args['idMarca'];
+                    @$tipo = $bodyIn['Tipo'];
+
+                    $modelo = new Modelo($this->logger);
+
+                    $res = $modelo->actualizarModelo($args['idMarca'], $args['idModelo'], $tipo);
                 }
 
             } else {
