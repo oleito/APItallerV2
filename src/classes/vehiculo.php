@@ -27,11 +27,31 @@ class Vehiculo
     public function detalleVehiculo($idvehiculo)
     {
         $sql = "SELECT
-                    idvehiculo, vehiculo_patente AS patente,
-                    vehiculo_vin AS
-                    vin, vehiculo_color AS color
+                    idvehiculo,
+                    vehiculo_patente AS patente,
+                    vehiculo_vin AS vin,
+                    vehiculo_color AS color
                 FROM
                     vehiculo
+                WHERE
+                    idvehiculo =:idvehiculo;";
+        $sql = "SELECT 
+                    idvehiculo, 
+                    vehiculo_patente AS patente, 
+                    vehiculo_vin AS vin, 
+                    vehiculo_color AS color, 
+                    vhMarca.vhMarca AS marca, 
+                    vhModelo.vhModelo AS modelo 
+                FROM 
+                    vehiculo 
+                    LEFT JOIN 
+                        vhModelo 
+                    ON 
+                        vhModelo.idvhModelo=vehiculo.vhModelo_idvhModelo 
+                    LEFT JOIN 
+                        vhMarca 
+                    ON 
+                        vhMarca.idvhMarca = vhModelo.vhMarca_idvhMarca
                 WHERE
                     idvehiculo =:idvehiculo;";
         try {

@@ -112,6 +112,10 @@ $app->group('/ordenes', function () use ($app) {
                         $orden = new Orden($this->logger);
                         $res = $orden->insertarSeguroEnReferencia($args['idReferencia'], $dataIn['idseguro']);
                     }
+                    if (array_key_exists('observaciones', $dataIn)) {
+                        $orden = new Orden($this->logger);
+                        $res = $orden->insertarObsEnReferencia($args['idReferencia'], $dataIn['observaciones']);
+                    }
                 }
 
             } else {

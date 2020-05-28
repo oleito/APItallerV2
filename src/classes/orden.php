@@ -31,15 +31,24 @@ class Orden
             $sql = "SELECT
                         idreferencia AS referencia,
                         idorden AS orden,
+                        orden_observaciones AS observaciones,
                         orden_siniestro AS siniestro,
                         seguro.seguro AS seguro,
                         vehiculo_idvehiculo AS idvehiculo,
                         vehiculo_patente AS patente,
                         vehiculo_vin AS vin,
-                        vehiculo_color AS color
+                        vehiculo_color AS color,
+                        vhMarca.vhMarca AS marca,
+                        vhModelo.vhModelo AS modelo
                     FROM `orden`
-                    LEFT JOIN seguro ON seguro.idseguro = orden.seguro_idseguro
-                        LEFT JOIN vehiculo ON vehiculo.idvehiculo=orden.vehiculo_idvehiculo
+                    LEFT JOIN seguro
+                        ON seguro.idseguro = orden.seguro_idseguro
+                    LEFT JOIN vehiculo
+                        ON vehiculo.idvehiculo = orden.vehiculo_idvehiculo
+                    LEFT JOIN vhModelo
+                        ON vhModelo.idvhModelo = vehiculo.vhModelo_idvhModelo
+                    LEFT JOIN vhMarca
+                        ON vhMarca.idvhMarca = vhModelo.vhMarca_idvhMarca
                     WHERE
                         idreferencia = :idReferencia";
 
@@ -151,6 +160,29 @@ class Orden
 
         } catch (Exception $e) {
             $this->logger->warning('insertarSeguroEnReferencia() - ', [$e->getMessage()]);
+            return 500;
+        }
+
+    }
+    public function insertarObsEnReferencia($idReferencia, $observacion)
+    {
+        try {
+            /** INSERTA LA ORDEN */
+            $sql = "UPDATE `orden`
+                    SET `orden_observaciones` = :observacion
+                    WHERE `orden`.`idreferencia` = :idReferencia;";
+
+            $sth = $this->conn->prepare($sql);
+
+            $sth->execute(array(
+                ':idReferencia' => $idReferencia,
+                ':observacion' => $observacion,
+            ));
+
+            return $this->detalleOrden($idReferencia);
+
+        } catch (Exception $e) {
+            $this->logger->warning('insertarObsEnReferencia() - ', [$e->getMessage()]);
             return 500;
         }
 
