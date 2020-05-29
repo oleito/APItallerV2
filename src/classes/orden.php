@@ -33,6 +33,7 @@ class Orden
                         idorden AS orden,
                         orden_observaciones AS observaciones,
                         orden_siniestro AS siniestro,
+                        orden_entrega_pactada AS fecha_entrega,
                         seguro.seguro AS seguro,
                         vehiculo_idvehiculo AS idvehiculo,
                         vehiculo_patente AS patente,
@@ -57,7 +58,9 @@ class Orden
                 array(
                     'idReferencia' => $idReferencia,
                 ));
-            return $sth->fetch();
+            $tmp = $sth->fetch();
+            $tmp['fecha_entrega'] = $this->cambiarFormatoAEspanol($tmp['fecha_entrega']);
+            return $tmp;
         } catch (Exception $e) {
             $this->logger->warning('listarOrdenes() - ', [$e->getMessage()]);
             return 500;
@@ -188,6 +191,33 @@ class Orden
 
     }
 
+    public function insertarFechaEnReferencia($idReferencia, $fecha)
+    {
+        try {
+
+            $fecha_entrega = $this->cambiarFormatoAMysql($fecha);
+
+            /** INSERTA LA ORDEN */
+            $sql = "UPDATE `orden`
+                    SET `orden_entrega_pactada` = :fecha_entrega
+                    WHERE `orden`.`idreferencia` = :idReferencia;";
+
+            $sth = $this->conn->prepare($sql);
+
+            $sth->execute(array(
+                ':idReferencia' => $idReferencia,
+                ':fecha_entrega' => $fecha_entrega,
+            ));
+
+            return $this->detalleOrden($idReferencia);
+
+        } catch (Exception $e) {
+            $this->logger->warning('insertarFechaEnReferencia() - ', [$e->getMessage()]);
+            return 500;
+        }
+
+    }
+
     public function eliminarOrden($idOrden)
     {
         $sql = "DELETE FROM `orden` WHERE `orden`.`idorden` = :idOrden;";
@@ -201,6 +231,19 @@ class Orden
             $this->logger->warning('eliminar Orden() - ', [$e->getMessage()]);
             return 500;
         }
+    }
+
+    public function cambiarFormatoAMysql($fecha)
+    {
+        preg_match('/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2,4})/', $fecha, $mifecha);
+        $lafecha = $mifecha[3] . "-" . $mifecha[2] . "-" . $mifecha[1];
+        return $lafecha;
+    }
+    public function cambiarFormatoAEspanol($fecha)
+    {
+        preg_match('/([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})/', $fecha, $mifecha);
+        $lafecha = $mifecha[3] . "/" . $mifecha[2] . "/" . $mifecha[1];
+        return $lafecha;
     }
 
 }

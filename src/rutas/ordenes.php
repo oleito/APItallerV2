@@ -116,6 +116,10 @@ $app->group('/ordenes', function () use ($app) {
                         $orden = new Orden($this->logger);
                         $res = $orden->insertarObsEnReferencia($args['idReferencia'], $dataIn['observaciones']);
                     }
+                    if (array_key_exists('fecha_entrega', $dataIn)) {
+                        $orden = new Orden($this->logger);
+                        $res = $orden->insertarFechaEnReferencia($args['idReferencia'], $dataIn['fecha_entrega']);
+                    }
                 }
 
             } else {
