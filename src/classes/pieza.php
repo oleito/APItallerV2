@@ -12,13 +12,19 @@ class Pieza
         $this->conn = $pdoMysql->conectar();
     }
 
-    public function listarPiezas($idOrden)
+    public function listarPiezas($idReferencia)
     {
-        $sql = "SELECT * FROM `pieza` WHERE orden_idorden = :idOrden;";
+
+        $sql = "SELECT
+                    pieza_nombre AS pieza, acciones_idaccion AS accion, tipo_cargo AS modo, pieza_codigo AS codigo, pieza_proveedor AS proveedor, pEstado.estado_pedido AS estado
+                FROM `pieza`
+                JOIN pEstado
+                    ON pEstado.idpEstado = pieza.pEstado_idpEstado
+                WHERE orden_idreferencia=:idReferencia;";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute(array(
-                ':idOrden' => $idOrden,
+                ':idReferencia' => $idReferencia,
             ));
             return $sth->fetchAll();
         } catch (Exception $e) {
@@ -27,25 +33,28 @@ class Pieza
         }
     }
 
-    public function insertarPieza($orden, $piezas)
+    public function insertarPieza($referencia, $piezas)
     {
         $sql = "INSERT
                 INTO `pieza`
-                (`idpieza`, `pieza_nombre`, `orden_idorden`, `acciones_idaccion`)
+                    (`idpieza`, `pieza_nombre`, `pieza_codigo`, `pieza_proveedor`, `acciones_idaccion`, `pEstado_idpEstado`, `tipo_cargo`, `orden_idorden`, `orden_idreferencia`)
                 VALUES
-                (NULL, :pieza, :orden, :accion);";
+                    (NULL, :pieza, :codigo, :proveed, :id_accion, '1', :cargo, NULL, :id_referencia);";
 
         try {
             $sth = $this->conn->prepare($sql);
             foreach ($piezas as $pieza) {
                 $sth->execute(array(
-                ':pieza' => $pieza['pieza'],
-                ':orden' => $orden,
-                ':accion' => $pieza['accion']
-            ));
+                    ':pieza' => $pieza['pieza'],
+                    ':id_accion' => $pieza['accion'],
+                    ':cargo' => $pieza['modo'],
+                    ':codigo' => $pieza['codigo'],
+                    ':proveed' => $pieza['proveedor'],
+                    ':id_referencia' => $referencia,
+                ));
             }
-            
-            return $this->listarPiezas($orden);
+
+            return $this->listarPiezas($referencia);
         } catch (Exception $e) {
             $this->logger->warning('insertarPieza() - ', [$e->getMessage()]);
             return 500;

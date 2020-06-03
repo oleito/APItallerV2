@@ -236,8 +236,7 @@ $app->group('/ordenes', function () use ($app) {
                     $res = 404;
                 }
 
-            } else
-            if ($request->isPost()) {
+            } else if ($request->isPost()) {
                 $bodyIn = [];
 
                 $bodyIn = $request->getParsedBody();
