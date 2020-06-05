@@ -25,3 +25,4 @@ require_once "vehiculo.php";
 require_once "orden.php";
 require_once "movimiento.php";
 require_once "pieza.php";
+require_once "foto.php";

@@ -299,4 +299,56 @@ $app->group('/ordenes', function () use ($app) {
             ->withJson(null);
     });
 
+    $app->map(['GET', 'POST'], '/{idOrden}/fotos', function (Request $request, Response $response, array $args) {
+        if ($request->getAttribute('isLoggedIn') === 'true') {
+            $rp['token'] = $request->getAttribute('newToken');
+
+            if ($request->isGet()) {
+                if (is_numeric($args['idOrden'])) {
+
+                    $foto = new Foto($this->logger);
+
+                    $res = $foto->listarFotos($args['idOrden']);
+                } else {
+                    $res = 404;
+                }
+
+            } else
+            if ($request->isPost()) {
+
+                $bodyIn = [];
+                $bodyIn = $request->getParsedBody();
+                if (!empty($bodyIn) && !empty($args['idOrden'])) {
+                    $idOrden = $args['idOrden'];
+
+                    $fotos = new Foto($this->logger);
+                    $this->logger->warning('/fotos - isPost() - ', []);
+
+                    $res = $fotos->insertarFotos($idOrden, $bodyIn['data']);
+
+                } else {
+                    $res = 401;
+                }
+
+            } else {
+                $res = 405;
+            }
+
+            if (is_numeric($res)) {
+                return $response->withHeader('Content-type', 'application/json')
+                    ->withStatus($res)
+                    ->withJson(null);
+            } else {
+                $rp['data'] = $res;
+                return $response->withHeader('Content-type', 'application/json')
+                    ->withStatus(200)
+                    ->withJson($rp);
+            }
+
+        }
+        return $response->withHeader('Content-type', 'application/json')
+            ->withStatus(401)
+            ->withJson(null);
+    });
+
 })->add($guardMiddleware);
