@@ -16,11 +16,20 @@ class Pieza
     {
 
         $sql = "SELECT
-                    pieza_nombre AS pieza, acciones_idaccion AS accion, tipo_cargo AS modo, pieza_codigo AS codigo, pieza_proveedor AS proveedor, pEstado.estado_pedido AS estado
+                    pieza_nombre AS pieza, 
+                    acciones.accion AS accion, 
+                    pieza_codigo AS codigo, 
+                    pieza_proveedor AS proveedor, 
+                    pEstado.estado_pedido AS estado ,
+                    CASE
+                        WHEN pieza.tipo_cargo= '2' THEN 'ext'
+                        WHEN pieza.tipo_cargo= '1' THEN 'int'
+                    END AS modo
                 FROM `pieza`
                 JOIN pEstado
                     ON pEstado.idpEstado = pieza.pEstado_idpEstado
-                WHERE orden_idreferencia=:idReferencia;";
+                    JOIN acciones ON pieza.acciones_idaccion=acciones.idaccion
+                WHERE orden_idreferencia = :idReferencia;";
         try {
             $sth = $this->conn->prepare($sql);
             $sth->execute(array(

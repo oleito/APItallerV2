@@ -59,7 +59,9 @@ class Orden
                     'idReferencia' => $idReferencia,
                 ));
             $tmp = $sth->fetch();
-            $tmp['fecha_entrega'] = $this->cambiarFormatoAEspanol($tmp['fecha_entrega']);
+            if ($tmp['fecha_entrega'] != null) {
+                $tmp['fecha_entrega'] = $this->cambiarFormatoAEspanol($tmp['fecha_entrega']);
+            }
             return $tmp;
         } catch (Exception $e) {
             $this->logger->warning('listarOrdenes() - ', [$e->getMessage()]);

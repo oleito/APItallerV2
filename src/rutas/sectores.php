@@ -8,6 +8,68 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
  */
 
 $app->group('/sectores', function () use ($app) {
+
+    /** SECTORES/VEHICULOS */
+    // Devuelve vehiculos por sector.
+    $app->map(['GET', 'POST'], '/vehiculos', function (Request $request, Response $response, array $args) {
+        if ($request->getAttribute('isLoggedIn') === 'true') {
+            $rp['token'] = $request->getAttribute('newToken');
+
+            if ($request->isGet()) {
+
+                $sector = new Sector($this->logger);
+
+                $res = $sector->listarVehiculosEnSectores();
+            } else {
+                $res = 405;
+            }
+
+            if (is_numeric($res)) {
+                return $response->withHeader('Content-type', 'application/json')
+                    ->withStatus($res)
+                    ->withJson(null);
+            } else {
+                $rp['data'] = $res;
+                return $response->withHeader('Content-type', 'application/json')
+                    ->withStatus(200)
+                    ->withJson($rp);
+            }
+
+        }
+        return $response->withHeader('Content-type', 'application/json')
+            ->withStatus(401)
+            ->withJson(null);
+    });
+    $app->map(['PUT', 'DELETE'], '/vehiculos', function (Request $request, Response $response, array $args) {
+        if ($request->getAttribute('isLoggedIn') === 'true') {
+            $rp['token'] = $request->getAttribute('newToken');
+
+            if ($request->isPut()) {
+
+                $bodyIn = $request->getParsedBody();
+                $sector = new Sector($this->logger);
+                $res = $sector->actualizarVehiculosEnSectores($bodyIn['idReferencia'], $bodyIn['nuevoSector']);
+
+            } else {
+                $res = 404;
+            }
+
+            if (is_numeric($res)) {
+                return $response->withHeader('Content-type', 'application/json')
+                    ->withStatus($res)
+                    ->withJson(null);
+            } else {
+                $rp['data'] = $res;
+                return $response->withHeader('Content-type', 'application/json')
+                    ->withStatus(200)
+                    ->withJson($rp);
+            }
+
+        }
+        return $response->withHeader('Content-type', 'application/json')
+            ->withStatus(401)
+            ->withJson(null);
+    });
     $app->map(['GET', 'POST'], '', function (Request $request, Response $response, array $args) {
         if ($request->getAttribute('isLoggedIn') === 'true') {
             $rp['token'] = $request->getAttribute('newToken');
@@ -61,35 +123,6 @@ $app->group('/sectores', function () use ($app) {
 
             } else {
                 $res = 404;
-            }
-
-            if (is_numeric($res)) {
-                return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus($res)
-                    ->withJson(null);
-            } else {
-                $rp['data'] = $res;
-                return $response->withHeader('Content-type', 'application/json')
-                    ->withStatus(200)
-                    ->withJson($rp);
-            }
-
-        }
-        return $response->withHeader('Content-type', 'application/json')
-            ->withStatus(401)
-            ->withJson(null);
-    });
-    $app->map(['GET', 'POST'], '/vehiculos', function (Request $request, Response $response, array $args) {
-        if ($request->getAttribute('isLoggedIn') === 'true') {
-            $rp['token'] = $request->getAttribute('newToken');
-
-            if ($request->isGet()) {
-
-                $sector = new Sector($this->logger);
-
-                $res = $sector->listarVehiculosEnSectores();
-            } else {
-                $res = 405;
             }
 
             if (is_numeric($res)) {
