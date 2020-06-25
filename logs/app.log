@@ -1,3 +1,1 @@
-[2020-06-17T03:43:13.255158-03:00] REPORTES.WARNING: listarSectores() -  ["SQLSTATE[HY000]: General error"] []
-[2020-06-17T03:44:12.913151-03:00] REPORTES.WARNING: actualizarVehiculosEnSectores() -  ["SQLSTATE[HY000]: General error"] []
-[2020-06-17T03:45:00.149602-03:00] REPORTES.WARNING: actualizarVehiculosEnSectores() -  ["SQLSTATE[HY000]: General error"] []
+

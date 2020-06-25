@@ -25,6 +25,31 @@ class Orden
         }
     }
 
+    public function listarOrdenesConPedidos()
+    {
+
+        $sql = "SELECT 
+                    DISTINCT orden_idreferencia AS referencia, 
+                    vehiculo.vehiculo_patente AS patente, 
+                    vehiculo.vehiculo_vin AS vin, 
+                    vhMarca.vhMarca AS marca, 
+                    vhModelo.vhModelo AS modelo
+                FROM pieza
+                JOIN orden ON pieza.orden_idreferencia = orden.idreferencia
+                LEFT JOIN vehiculo ON vehiculo.idvehiculo = orden.vehiculo_idvehiculo
+                LEFT JOIN vhModelo ON vhModelo.idvhModelo =  vehiculo.vhModelo_idvhModelo
+                LEFT JOIN vhMarca ON vhMarca.idvhMarca = vhModelo.vhMarca_idvhMarca
+                WHERE pieza.acciones_idaccion = 3 AND pieza.tipo_cargo = 1";
+        try {
+            $sth = $this->conn->prepare($sql);
+            $sth->execute();
+            return $sth->fetchAll();
+        } catch (Exception $e) {
+            $this->logger->warning('listarOrdenes() - ', [$e->getMessage()]);
+            return 500;
+        }
+    }
+
     public function detalleOrden($idReferencia)
     {
         try {
